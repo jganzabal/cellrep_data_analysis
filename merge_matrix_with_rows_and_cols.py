@@ -1,7 +1,7 @@
 # %%
 from scipy.io import mmread
 import pandas as pd
-
+import re
 # %%
 guide_calls = pd.read_csv("data/Perturb-seq/data/cellranger-guidecalls-aggregated-unfiltered.txt", sep="\t")
 features = pd.read_csv('data/GSE190604_features.tsv', sep='\t', header=None)
@@ -9,11 +9,14 @@ features.columns = ['Ensembl Gene ID', 'Gene Name', 'Method']
 bar_codes_df = pd.read_csv('data/GSE190604_barcodes.tsv', sep='\t', header=None)
 bar_codes_df.columns=['Cell line']
 # %%
-features
+# Add condition, guide target ("gene"), perturbed/control (crispr) columns
+bar_codes_df['condition'] = bar_codes_df['Cell line'].apply(lambda x: 'Nostim' if re.search(r'-[1-4]', x) else 'Stim')
+features['Gene Clean Name'] = features.apply(lambda x: x['Gene Name'][:-2] if x['Method']=='CRISPR Guide Capture' else x['Gene Name'], axis=1)
+features['CRISPr'] = features['Gene Name'].apply(lambda x: 'NT' if 'NO-TARGET' in x else 'perturbed')
+# %%
+bar_codes_df
 # %%
 mat = mmread('data/GSE190604_matrix.mtx')
-# %%
-mat
 # %%
 nonzero_elements = mat.data
 nonzero_indices = mat.nonzero()
@@ -24,16 +27,17 @@ nonzero_df = pd.DataFrame({
     'RNA counts': nonzero_elements
 })
 # %%
-df_rows_merged = pd.merge(features[['Gene Name', 'Method']], nonzero_df, right_on='row', left_index=True, how='right').drop(columns=['row'])
+del mat
+# %%
+df_rows_merged = pd.merge(features[['Gene Name', 'Method', 'Gene Clean Name', 'CRISPr']], nonzero_df, right_on='row', left_index=True, how='right').drop(columns=['row'])
 df_rows_merged
 # %%
 df_merged = pd.merge(bar_codes_df, df_rows_merged, right_on='col', left_index=True, how='right').drop(columns=['col'])
 df_merged
 # %%
+df_merged.to_parquet('data_out/all_merged.parquet')
 # %%
 del df_rows_merged
-del mat
-# %%
 # %%
 df_indexed = df_merged.set_index(['Cell line', 'Gene Name', 'Method'])
 del df_merged
@@ -56,13 +60,11 @@ guide_calls['num_umis'] = guide_calls.num_umis.apply(lambda x: x.split('|'))
 # %%
 guide_calls_exploded = guide_calls.explode(column=['feature_call', 'num_umis'])
 # %%
-num_umis_2 = guide_calls_exploded.apply(lambda x: df_indexed_cripr.loc[x['cell_barcode']].loc[x['feature_call']], axis=1)
+guide_calls_exploded
 # %%
 guide_calls_exploded['num_umis'] = guide_calls_exploded['num_umis'].astype(int)
 # %%
 guide_calls_exploded_indexed = guide_calls_exploded.rename(columns={'cell_barcode': 'Cell line', 'feature_call': 'Gene Name'}).set_index(['Cell line', 'Gene Name'])
-# %%
-guide_calls_exploded_indexed
 # %%
 merged = guide_calls_exploded_indexed.merge(
     df_indexed_cripr, how='left', left_index=True, right_index=True
