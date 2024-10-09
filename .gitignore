@@ -2,3 +2,6 @@ data
 data_out
 cache
 .ipynb_checkpoints
+input_data
+__pycache__
+docs
