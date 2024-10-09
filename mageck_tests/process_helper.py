@@ -125,14 +125,14 @@ def plot_donors_scatter(screen_analysis_table):
     for gene, row in screen_analysis_table.iterrows():
         x = row['Donor1_LFC']
         y = row['Donor2_LFC']
-        if (x**2 + y**2)**(1/2) > 2:
-            
+        # if (x**2 + y**2)**(1/2) > 2:
+        if ((x**2 + y**2)**(1/2) > 1.5) and (row['Hit_Type'] != not_a_hit_label):
             texts.append(
                 ax.text(
                     x, y, gene,
                     # color=GREY30,
                     fontsize=8,
-                    fontname="Poppins"
+                    # fontname="Poppins"
                 )
             )
             # ax.annotate(gene, (x, y))
@@ -150,7 +150,7 @@ def plot_donors_scatter(screen_analysis_table):
     ax.set_ylabel('Donor 16, LFC')
     return fig
 
-def plot_vulcano(screen_analysis_table, x_label='', y_label='', eps=1e-6, top_10_low=[], top_10_high=[]):
+def plot_volcano(screen_analysis_table, x_label='', y_label='', eps=1e-6, top_10_low=[], top_10_high=[]):
     genes_to_show = top_10_low + top_10_high
     screen_analysis_table['color_volcano'] = screen_analysis_table.index.map(lambda x: 'red' if x in top_10_high else 'blue' if x in top_10_low else 'gray')
 
@@ -192,7 +192,7 @@ def plot_vulcano(screen_analysis_table, x_label='', y_label='', eps=1e-6, top_10
                     x, y, gene,
                     # color=GREY30,
                     fontsize=8,
-                    fontname="Poppins"
+                    # fontname="Poppins"
                 )
             )
     adjust_text(
