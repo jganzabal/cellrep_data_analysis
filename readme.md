@@ -40,30 +40,30 @@ pip install -r requirements.txt
 ```
 
 
-# Calculo de cell activation scores:
+# Cell activation scores in R code explained:
 
-1. Differential expression Analysis para NO-TARGET
+1. Differential expression Analysis for NO-TARGET
 Group: 'condition' (Stim vs Nostim)
-Resultado:
-GEN --> LFC es metrica de expresión en el grupo Stim
-Se queda con los genes relevantes: pvalues > 0.001
-A esto lo defino como **gene_weights**
-Es "lo que expresan" los genes cuando estimulo sin target relativo a Nostim
+Result:
+GEN --> LFC is the expression metric in Stim gropu
+Keep only relevant genes: pvalues > 0.001
+This is called **gene_weights**: It is what genes express when they are stimulated relative to NoStim (Only NO-TARGET)
 
 2. Get average expression values for these genes in NT control cells
-De matriz scRNA-seq Stim despues de aplicar SCTransform (normalizar):
-- Para cada GEN en **gene_weights**, calcula el promedio de counts tomando los celulas NT
-- Los pasa a log
-- los llama **NT_AVG**
-Promedio de expresión por gen en Stim
+From scRNA-seq Stim matix after SCTransform (normalization):
+- For each gene in **gene_weights**, calculate average counts from only NT cells
+- To log
+- The are called **NT_AVG**
+Expression average per gene in Stim
 
 3. Cell Activation Score
-- Para cada célula calculo sobre cada gen:
-value * gene_weights / NT_AVG
-Donde value es el valor de la matriz
-cell_act_score = sumo todos los genes para cada célula
-Es como que multiplico al LFC por el "valor" normalizado
-A nivel unidades me quedan unidades de LFC
+- For each cell we calculate it for every gene
+- value * gene_weights / NT_AVG
+Where value is the count in the matrix (expression)
+cell_act_score = Add all genes for each cell
+
+It is like multiplying the LFC for the "value" normalized
+The "physical units" are in LFC
 
 
 
