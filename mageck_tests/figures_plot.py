@@ -4,7 +4,13 @@
 # %%
 import pandas as pd
 from matplotlib import pyplot as plt
-from process_helper import plot_vulcano, generate_screen_analysis_table, plot_donors_scatter
+from process_helper import plot_volcano, generate_screen_analysis_table, plot_donors_scatter, read_data
+# %%
+a, b, c, d = read_data('data_out')
+# %%
+b[0]
+# %%
+
 # %%
 _ = generate_screen_analysis_table(
     'data_out',

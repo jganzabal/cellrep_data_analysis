@@ -2,6 +2,39 @@
 import pandas as pd
 
 df_all = pd.read_csv('../data/GSE190846/GSE190846_supp_CD4_CRISPR_screens_read_counts.tsv', sep='\t')
+df_all
+# %%
+base_cols = ['sgRNA', 'Gene']
+df_all.columns = base_cols + ['_'.join(c.split('_')[1:5]) for c in df_all.columns[2:]]
+# %%
+df_all.shape
+# %%
+def average_reps():
+    donors = [15, 16]
+    hls = ['high', 'low']
+    for d in donors:
+        for hl in hls:
+            print(d, hl)
+            df_all[f'Donor{d}_IFNG_{hl}'] = (df_all[f'Donor{d}_IFNG_{hl}_Rep1'] + df_all[f'Donor{d}_IFNG_{hl}_Rep2'])/2
+# %%
+df_all.shape
+# %%
+df_all
+# %%
+input_folder = 'input_data'
+nt_filename = f'{input_folder}/complementary_NO-TARGET.txt'
+nt_df = df_all[df_all['Gene'].apply(lambda x: x=='NO-TARGET')]['sgRNA']
+nt_df.to_csv(f'{nt_filename}', index=False, header=False)
+nt_df
+# %%
+
+# %%
+filename = f'{input_folder}/{cytokine}_count.txt'
+df_filt.to_csv(filename, sep='\t', index=False)
+
+
+
+
 # %%
 df_cols = pd.DataFrame([c.split('_') + [c] for c in df_all.columns[2:]])
 df_cols.sort_values(2)

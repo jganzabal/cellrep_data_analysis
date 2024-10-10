@@ -66,7 +66,7 @@ def generate_screen_analysis_table(folder='data_out', hit_FDR_thres=0.05, hit_LF
     gene_summaries = [df.assign(Screen=screen, Cytokine=cytokine) for df, (cytokine, screen) in zip(gene_summaries, names_gene_dat)]
 
     print(f'Both pos and neg fdr minor than 0.05')
-    filtered_gene_summaries = [df[(df['neg|fdr'] < 0.05) & (df['pos|fdr'] < 0.05)] for df in gene_summaries]
+    filtered_gene_summaries = [df[(df['neg|fdr'] < hit_FDR_thres) & (df['pos|fdr'] < hit_FDR_thres)] for df in gene_summaries]
     print([len(d) for d in filtered_gene_summaries])
 
     # Get single FDR value
@@ -101,7 +101,7 @@ def generate_screen_analysis_table(folder='data_out', hit_FDR_thres=0.05, hit_LF
     return dat_for_export
 
 
-def plot_donors_scatter(screen_analysis_table):
+def plot_donors_scatter(screen_analysis_table, x_label='', y_label='', plot_title=''):
 
     not_a_hit_label = 'Not a Hit'
     screen_analysis_table['Hit_Type'] = screen_analysis_table['Hit_Type'].fillna(not_a_hit_label)
@@ -146,11 +146,12 @@ def plot_donors_scatter(screen_analysis_table):
         ),
         ax=fig.axes[0]
     )
-    ax.set_xlabel('Donor 15, LFC')
-    ax.set_ylabel('Donor 16, LFC')
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    ax.set_title(plot_title)
     return fig
 
-def plot_volcano(screen_analysis_table, x_label='', y_label='', eps=1e-6, top_10_low=[], top_10_high=[]):
+def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', eps=1e-6, top_10_low=[], top_10_high=[]):
     genes_to_show = top_10_low + top_10_high
     screen_analysis_table['color_volcano'] = screen_analysis_table.index.map(lambda x: 'red' if x in top_10_high else 'blue' if x in top_10_low else 'gray')
 
@@ -209,5 +210,18 @@ def plot_volcano(screen_analysis_table, x_label='', y_label='', eps=1e-6, top_10
     ax.set_ylim([-0.1, 4.5])
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
+    ax.set_title(plot_title)
     return fig
 
+def get_mageck_command(count_filename, donor_1, donor_2, cytokine, out_filename, nt_filename):
+    mageck_command = f"""
+    mageck test -k {count_filename} \\
+    -t Donor{donor_1}_{cytokine}_high,Donor{donor_2}_{cytokine}_high \\
+    -c Donor{donor_1}_{cytokine}_low,Donor{donor_2}_{cytokine}_low \\
+    -n {out_filename} \\
+    --norm-method none \\
+    --paired \\
+    --control-sgrna {nt_filename} \\
+    --keep-tmp
+    """
+    return mageck_command
