@@ -1,0 +1,8 @@
+jupyter==1.1.1
+scanpy==1.10.3
+pandas
+numpy
+matplotlib
+adjustText
+
+

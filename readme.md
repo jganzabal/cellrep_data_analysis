@@ -21,9 +21,21 @@ https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190604
 - R Repository and processed Data: https://zenodo.org/records/5784651
 
+# Folders
+## experiment_4/R code
+You can run the original R code with a devcontainer
 
 ## R_translated
 R code from zenodo experiment 4 translated to python
+
+# Python Environment
+```bash
+conda create -n cellrep python=3.7
+conda activate cellrep
+conda install -c bioconda mageck=0.5.9.2
+pip install -r requirements.txt
+```
+
 
 # Calculo de cell activation scores:
 
