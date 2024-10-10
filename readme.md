@@ -1,7 +1,7 @@
 # CRISPR activation and interference screens decode stimulation responses in primary human T cells
 ## Results replication
-Coding replication from raw data to some figures and tables
-Mainly in python
+- Coding replication from raw data to some figures and tables
+- Mainly in python
 
 # Data
 ### Experiment 1: Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
@@ -21,12 +21,6 @@ https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190604
 - R Repository and processed Data: https://zenodo.org/records/5784651
 
-# Repository folders
-## notebooks
-Experiment 4 data analysis and replication
-
-## mageck_tests
-Experiment 2 and 3 replication from raw data
 
 ## R_translated
 R code from zenodo experiment 4 translated to python

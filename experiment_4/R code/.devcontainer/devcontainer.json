@@ -1,0 +1,35 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "scRNA",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "gnwanne/scrna:1.7",
+
+	"mounts": [
+		"source=/home/julian/cellrep/data_analysis/data/Perturb-seq/data,target=/workspaces/data_analysis/experiment_4/R code/data,type=bind,consistency=cached",
+		"source=/home/julian/cellrep/data_analysis/data/GSE190604,target=/workspaces/data_analysis/experiment_4/R code/raw_data,type=bind,consistency=cached"
+	],
+	// "workspaceMount": "source=/home/julian/cellrep/data_analysis/data/Perturb-seq/data, target=/workspace,type=bind,consistency=delegated"
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "uname -a",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"REditorSupport.r"
+			]
+		}
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+	
+}
