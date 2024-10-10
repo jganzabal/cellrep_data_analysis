@@ -151,18 +151,35 @@ def plot_donors_scatter(screen_analysis_table, x_label='', y_label='', plot_titl
     ax.set_title(plot_title)
     return fig
 
-def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', eps=1e-6, top_10_low=[], top_10_high=[]):
+def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', eps=1e-6, top_10_low=None, top_10_high=None, top_n=10, fig_size=(5,5)):
+    def log_func(x):
+        return -np.log10(eps + x)
+    
+    if not top_10_high:
+        top_10_high = screen_analysis_table[screen_analysis_table['Hit']].sort_values('LFC', ascending=False)['Gene'][:top_n].to_list()
+    if not top_10_low:
+        top_10_low = screen_analysis_table[screen_analysis_table['Hit']].sort_values('LFC', ascending=True)['Gene'][:top_n].to_list()
     genes_to_show = top_10_low + top_10_high
-    screen_analysis_table['color_volcano'] = screen_analysis_table.index.map(lambda x: 'red' if x in top_10_high else 'blue' if x in top_10_low else 'gray')
+    print('Upregulated:')
+    print(top_10_high)
+    print('Downregulated:')
+    print(top_10_low)
+
+    if 'Gene' in screen_analysis_table.columns:
+        screen_analysis_table = screen_analysis_table.set_index('Gene').copy()
+
+    screen_analysis_table['color_volcano'] = screen_analysis_table['Hit_Type'].apply(
+        lambda x: 'red' if x=='Positive Hit' else 'blue' if x=='Negative Hit' else 'gray'
+    )
 
 
-    screen_analysis_table['log_10_FDR'] = -np.log10(eps + screen_analysis_table['FDR'])
+    screen_analysis_table['log_10_FDR'] = log_func(screen_analysis_table['FDR'])
     # To plot them after
     screen_analysis_table_filt = screen_analysis_table[
         screen_analysis_table.index.isin(genes_to_show)
     ]
     
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=fig_size);
 
     ax.scatter(
         screen_analysis_table['LFC'],
@@ -177,9 +194,11 @@ def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', e
         c=screen_analysis_table_filt['color_volcano'],
         s=2
     )
-    plt.axvline(-2,color="grey",linestyle="--")
-    plt.axvline(2,color="grey",linestyle="--")
-    plt.axhline(2,color="grey",linestyle="--")
+    # min_v_line = screen_analysis_table_filt[screen_analysis_table_filt['Hit_Type']=='Positive Hit'].sort_values('LFC', ascending=False)['LFC'].min()
+    # min_v_line = screen_analysis_table_filt[screen_analysis_table_filt['Hit_Type']=='Positive Hit'].sort_values('LFC', ascending=False)['LFC'].min()
+    plt.axvline(-0.5,color="grey",linestyle="--")
+    plt.axvline(0.5,color="grey",linestyle="--")
+    plt.axhline(log_func(0.05),color="grey",linestyle="--")
 
 
     texts = []
@@ -198,15 +217,15 @@ def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', e
             )
     adjust_text(
         texts, 
-        expand_points=(2, 4),
+        expand_points=(3, 5),
         arrowprops=dict(
             arrowstyle="->", 
             # color=GREY50, 
             lw=0.5
         ),
         ax=fig.axes[0]
-    )
-    ax.set_xlim([-3, 3])
+    );
+    # ax.set_xlim([-3, 3])
     ax.set_ylim([-0.1, 4.5])
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)

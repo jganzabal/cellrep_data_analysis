@@ -1,21 +1,47 @@
 # %%
+%config InlineBackend.figure_format = 'retina'
 import pandas as pd
+from matplotlib import pyplot as plt
+from prepare_original_data import read_cd8_data_for_mageck, data_to_file_for_mageck 
 # %%
-all_data_df = pd.read_excel(
-    '../data/GSE174292/GSE174255	/GSE174255_sgRNA-Read-Counts.xlsx', sheet_name=None
+crispr_type = 'CRISPRa'
+cell_type = 'CD8'
+
+raw_data = read_cd8_data_for_mageck(
+    crispr_type=crispr_type
 )
 # %%
-dfs = []
-for i, df in all_data_df.items():
-    if 'CalabreseSet' in i:
-        dfs.append(df)
+raw_data
 # %%
-df_1 = dfs[0].set_index(['sgRNA', 'Gene'])
-df_2 = dfs[1].set_index(['sgRNA', 'Gene'])
+raw_data.describe()
+raw_data = raw_data.reset_index()
 # %%
-df_1.sum()
+hi_label = 'Donor1_IFNG_high'
+lo_label = 'Donor1_IFNG_low'
+hi_label = 'Donor2_IFNG_high'
+lo_label = 'Donor2_IFNG_low'
+hi_label = 'Donor1_IL2_high'
+lo_label = 'Donor1_IL2_low'
+hi_label = 'Donor2_IL2_high'
+lo_label = 'Donor2_IL2_low'
+f, ax = plt.subplots(1,1)
+bins=100
+print((raw_data[hi_label] > raw_data[lo_label]).sum()/len(raw_data))
+raw_data[hi_label].hist(bins=bins, alpha=0.5, ax=ax, label='hi', density=False)
+raw_data[lo_label].hist(bins=bins, alpha=0.5, ax=ax, label='low', density=False)
+plt.legend()
 # %%
-df_2.sum()
+n_low = 60
+n_hi = 1000
+where_to_eval = (
+    (raw_data[hi_label]>n_low) & (raw_data[hi_label]>n_low) &
+    (raw_data[hi_label]<n_hi) & (raw_data[hi_label]<n_hi)
+)
+print((raw_data[where_to_eval][hi_label] > raw_data[where_to_eval][lo_label]).sum()/len(raw_data[where_to_eval]))
+# %%
+n_low = 80
+where_to_eval = (raw_data[hi_label]>n_low) & (raw_data[hi_label]>n_low)
+print((raw_data[where_to_eval][hi_label] > raw_data[where_to_eval][lo_label]).sum()/len(raw_data[where_to_eval]))
 # %%
 
 # %%
