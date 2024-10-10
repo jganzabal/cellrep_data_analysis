@@ -108,8 +108,8 @@ def plot_donors_scatter(screen_analysis_table, x_label='', y_label='', plot_titl
 
     color_dict = {
         not_a_hit_label: 'gray',
-        'Negative Regulator': 'blue',
-        'Positive Regulator': 'red',
+        'Negative Hit': 'blue',
+        'Positive Hit': 'red',
     }
 
     screen_analysis_table['color'] = screen_analysis_table['Hit_Type'].apply(color_dict.get)
@@ -122,14 +122,14 @@ def plot_donors_scatter(screen_analysis_table, x_label='', y_label='', plot_titl
         s=2
     )
     texts = []
-    for gene, row in screen_analysis_table.iterrows():
+    for _, row in screen_analysis_table.iterrows():
         x = row['Donor1_LFC']
         y = row['Donor2_LFC']
         # if (x**2 + y**2)**(1/2) > 2:
         if ((x**2 + y**2)**(1/2) > 1.5) and (row['Hit_Type'] != not_a_hit_label):
             texts.append(
                 ax.text(
-                    x, y, gene,
+                    x, y, row['Gene'],
                     # color=GREY30,
                     fontsize=8,
                     # fontname="Poppins"
@@ -185,14 +185,14 @@ def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', e
         screen_analysis_table['LFC'],
         screen_analysis_table['log_10_FDR'],
         c=screen_analysis_table['color_volcano'],
-        s=1
+        s=2
     )
 
     ax.scatter(
         screen_analysis_table_filt['LFC'],
         screen_analysis_table_filt['log_10_FDR'], 
         c=screen_analysis_table_filt['color_volcano'],
-        s=2
+        s=4
     )
     # min_v_line = screen_analysis_table_filt[screen_analysis_table_filt['Hit_Type']=='Positive Hit'].sort_values('LFC', ascending=False)['LFC'].min()
     # min_v_line = screen_analysis_table_filt[screen_analysis_table_filt['Hit_Type']=='Positive Hit'].sort_values('LFC', ascending=False)['LFC'].min()
@@ -211,17 +211,17 @@ def plot_volcano(screen_analysis_table, x_label='', y_label='', plot_title='', e
                 ax.text(
                     x, y, gene,
                     # color=GREY30,
-                    fontsize=8,
+                    fontsize=10,
                     # fontname="Poppins"
                 )
             )
     adjust_text(
         texts, 
-        expand_points=(3, 5),
+        expand_points=(6, 10),
         arrowprops=dict(
             arrowstyle="->", 
             # color=GREY50, 
-            lw=0.5
+            lw=1
         ),
         ax=fig.axes[0]
     );
