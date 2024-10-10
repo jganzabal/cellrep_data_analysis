@@ -4,20 +4,23 @@
 - Mainly in python
 
 # Data
-### Experiment 1: Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
-#### CRISPRa and CRISPRi for Primary study:
+### Experiment 1: 
+#### Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count (IL2, IFNg): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174255
 
-### Experiment 2: Complementary CRISPRa and CRISPRi screens comprehensively reveal circuits of cytokine production in T cells:
+### Experiment 2: 
+#### Complementary CRISPRa and CRISPRi screens comprehensively reveal circuits of cytokine production in T cells:
 - Raw count CD4 Supplementary(IL2, IFNg, TFNa): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190846
 
-### Experiment 3: Arrayed characterization of selected CRISPRa screen hits
+### Experiment 3: 
+#### Arrayed characterization of selected CRISPRa screen hits
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count (4 donors stim vs no stim, FOXQ1): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174284
 
 
-### Experiment 4: CRISPRa Perturb-seq characterizes the molecular phenotypes of cytokine regulators
+### Experiment 4: 
+#### CRISPRa Perturb-seq characterizes the molecular phenotypes of cytokine regulators
 - Raw count: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190604
 - R Repository and processed Data: https://zenodo.org/records/5784651
 
