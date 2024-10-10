@@ -1,29 +1,35 @@
-# Analysis of 2022 paper:
-### CRISPR activation and interference screens decode stimulation responses in primary human T cells
-# Data for studies
-### Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
+# CRISPR activation and interference screens decode stimulation responses in primary human T cells
+## Results replication
+Coding replication from raw data to some figures and tables
+Mainly in python
+
+# Data
+### Experiment 1: Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
 #### CRISPRa and CRISPRi for Primary study:
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count (IL2, IFNg): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174255
 
-#### CRISPRa and CRISPRi for Suplemmentary study:
+### Experiment 2: Complementary CRISPRa and CRISPRi screens comprehensively reveal circuits of cytokine production in T cells:
 - Raw count CD4 Supplementary(IL2, IFNg, TFNa): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190846
 
-### Arrayed characterization of selected CRISPRa screen hits
+### Experiment 3: Arrayed characterization of selected CRISPRa screen hits
 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174292:
 - Raw count (4 donors stim vs no stim, FOXQ1): https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE174284
 
 
-### CRISPRa Perturb-seq characterizes the molecular phenotypes of cytokine regulators
+### Experiment 4: CRISPRa Perturb-seq characterizes the molecular phenotypes of cytokine regulators
 - Raw count: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE190604
 - R Repository and processed Data: https://zenodo.org/records/5784651
 
 # Repository folders
 ## notebooks
-CRISPRa Perturb-seq characterizes the molecular phenotypes of cytokine regulators
+Experiment 4 data analysis and replication
 
 ## mageck_tests
-Genome-wide CRISPRa screens identify regulators of IL-2 and IFN-γ production in T cells
+Experiment 2 and 3 replication from raw data
+
+## R_translated
+R code from zenodo experiment 4 translated to python
 
 # Calculo de cell activation scores:
 
